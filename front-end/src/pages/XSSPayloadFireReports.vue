@@ -110,7 +110,7 @@
                                             </small>
                                         </div>
                                         <div class="m-2 mt-4">
-                                            <code v-if="report.localStorage">{{atob(report.localStorage)}}</code>
+                                            <code v-if="report.localStorage">{{b64decode(report.localStorage)}}</code>
                                             <pre v-else><i>None</i></pre>
                                         </div>
                                         <hr />
@@ -123,7 +123,7 @@
                                             </small>
                                         </div>
                                         <div class="m-2 mt-4">
-                                            <code v-if="report.sessionStorage">{{atob(report.sessionStorage)}}</code>
+                                            <code v-if="report.sessionStorage">{{b64decode(report.sessionStorage)}}</code>
                                             <pre v-else><i>None</i></pre>
                                         </div>
                                         <hr />
@@ -283,6 +283,11 @@ export default {
         },
     },
     methods: {
+		b64decode(data) {
+			let buff = new Buffer(data, 'base64');
+			let b64 = buff.toString('ascii');
+			return b64;
+		},
         async delete_payload_fire(payload_id) {
             const result = await api_request.delete_payload_fires([payload_id]);
             this.pull_payload_fire_reports();
